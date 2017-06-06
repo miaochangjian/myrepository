@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.foodisgod.mapper.FoodItemDescMapper" >
+   <insert id="addFoodItemDesc">
+    insert into food_item_desc (item_id, created_time, updated_time, 
+      item_desc)
+    values (#{itemId,jdbcType=BIGINT}, #{createdTime,jdbcType=TIMESTAMP}, #{updatedTime,jdbcType=TIMESTAMP}, 
+      #{itemDesc,jdbcType=LONGVARCHAR})
+  </insert>
+</mapper>

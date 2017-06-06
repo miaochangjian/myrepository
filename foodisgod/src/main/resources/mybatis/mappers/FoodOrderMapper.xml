@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.foodisgod.mapper.FoodOrderMapper" >
+
+	<insert id="saveOrder">
+		insert into food_order 
+		values(
+		#{orderId,jdbcType=BIGINT},
+		#{payment,jdbcType=BIGINT},
+		#{paymentType,jdbcType=INTEGER},
+		#{status,jdbcType=INTEGER},
+		#{createdTime,jdbcType=TIMESTAMP},
+		#{updatedTime,jdbcType=TIMESTAMP},
+		#{paymentTime,jdbcType=TIMESTAMP},
+		#{endTime,jdbcType=TIMESTAMP},
+		#{closeTime,jdbcType=TIMESTAMP},
+		#{userId,jdbcType=BIGINT},
+		#{buyerMessage,jdbcType=VARCHAR},
+		#{buyerNick,jdbcType=VARCHAR},
+		#{buyerRate,jdbcType=INTEGER}
+		) 
+		
+	<!-- 	  order_id             bigint(20) not null auto_increment comment '订单id',
+   payment              bigint(50) comment '实付金额。精确到2位小数;单位:元。如:200.07，表示:200元7分',
+   payment_type         int(2) comment '支付类型，1、在线支付，2、货到付款',
+   status               int(10) comment '状态：1、未付款，2、已付款，3、未发货，4、已发货，5、交易成功，6、交易关闭',
+   created_time         datetime comment '订单创建时间',
+   updated_time         datetime comment '订单更新时间',
+   payment_time         datetime comment '付款时间',
+   end_time             datetime comment '交易完成时间',
+   close_time           datetime comment '交易关闭时间',
+   user_id              bigint(20) comment '用户id',
+   buyer_message        varchar(100) comment '买家留言',
+   buyer_nick           varchar(50) comment '买家昵称',
+   buyer_rate           int(2) comment '买家是否评价', -->
+		
+		
+	</insert>
+	<insert id="saveOrderItem">
+	insert into food_order_item 
+		values(
+		#{foodOiId,jdbcType=INTEGER},
+		#{num,jdbcType=INTEGER},
+		#{title,jdbcType=VARCHAR},
+		#{price,jdbcType=BIGINT},
+		#{totalFee,jdbcType=BIGINT},
+		#{orderId,jdbcType=BIGINT},
+		#{itemId,jdbcType=BIGINT}
+		) 
+		
+	</insert>
+</mapper>

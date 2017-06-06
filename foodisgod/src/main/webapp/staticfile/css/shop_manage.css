@@ -1,0 +1,49 @@
+@charset "UTF-8";
+
+
+body {
+	background: #EEEEEE;
+	margin: 0;
+	padding: 0;
+	font-family: "微软雅黑", Arial, Helvetica, sans-serif;
+}
+
+a {
+	color: #006600;
+	text-decoration: none;
+}
+
+a:hover {
+	color: #990000;
+}
+
+.top {
+	margin: 5px auto;
+	color: #990000;
+	text-align: center;
+}
+
+.address-info select {
+	border: 1px solid #dedede;
+	background: none;
+	border-radius: 8px;
+	margin: 0 auto;
+	width:200px;
+	height:35px;
+}
+
+.address-info {
+	margin: 5px;
+	text-align: center;
+}
+
+.address-info #show {
+	color: #3399FF;
+}
+
+.bottom {
+	text-align: right;
+	font-size: 12px;
+	color: #CCCCCC;
+	width: 1000px;
+}

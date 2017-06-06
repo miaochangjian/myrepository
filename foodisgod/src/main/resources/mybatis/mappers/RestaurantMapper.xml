@@ -1,0 +1,413 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.foodisgod.mapper.RestaurantMapper">
+
+	<!--店铺列表 -->
+	<select id="findAllByManagerId" resultType="Restaurant">
+		select from
+		restaurant where
+		manager_id=#{managerId}
+	</select>
+
+	<!--商家注册增 -->
+	<insert id="saveRestaurant" parameterType="com.foodisgod.pojo.Restaurant">
+		insert into restaurant
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="restaurantId != null">
+				restaurant_id,
+			</if>
+			<if test="managerId != null">
+				manager_id,
+			</if>
+			<if test="name != null">
+				name,
+			</if>
+			<if test="category != null">
+				category,
+			</if>
+			<if test="address != null">
+				address,
+			</if>
+			<if test="descrip != null">
+				descrip,
+			</if>
+			<if test="createdTime != null">
+				created_time,
+			</if>
+			<if test="updatedTime != null">
+				updated_time,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="restaurantId != null">
+				#{restaurantId,jdbcType=BIGINT},
+			</if>
+			<if test="managerId != null">
+				#{managerId,jdbcType=BIGINT},
+			</if>
+			<if test="name != null">
+				#{name,jdbcType=VARCHAR},
+			</if>
+			<if test="category != null">
+				#{category,jdbcType=VARCHAR},
+			</if>
+			<if test="address != null">
+				#{address,jdbcType=VARCHAR},
+			</if>
+			<if test="descrip != null">
+				#{descrip,jdbcType=VARCHAR},
+			</if>
+			<if test="createdTime != null">
+				#{createdTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="updatedTime != null">
+				#{updatedTime,jdbcType=TIMESTAMP},
+			</if>
+		</trim>
+	</insert>
+	<!--店铺删除 -->
+	<delete id="deleteRestaurant">
+		delete from restaurant where
+		restaurant_id=#{restaurantId}
+	</delete>
+
+	<!--查找一个 -->
+	<select id="findOne" resultType="Restaurant">
+		select from restaurant where
+	</select>
+	<!--店铺的更新 -->
+	<update id="updateRestaurant">
+		update restaurant set
+		name=#{name},address=#{address},updateTime=#{updateTime},
+		item_id=#{itemId},descrip=#{descrip},category=#{category}
+		where
+		restaurant_id=#{restaurantId}
+	</update>
+
+	
+  <resultMap id="BaseResultMap" type="com.foodisgod.pojo.Restaurant" >
+    <id column="restaurant_id" property="restaurantId" jdbcType="BIGINT" />
+    <result column="manager_id" property="managerId" jdbcType="BIGINT" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="created_time" property="createdTime" jdbcType="TIMESTAMP" />
+    <result column="updated_time" property="updatedTime" jdbcType="TIMESTAMP" />
+    <result column="item_id" property="itemId" jdbcType="BIGINT" />
+    <result column="category" property="category" jdbcType="BIGINT" />
+  </resultMap>
+  <resultMap id="ResultMapWithBLOBs" type="com.foodisgod.pojo.RestaurantWithBLOBs" extends="BaseResultMap" >
+    <result column="address" property="address" jdbcType="LONGVARCHAR" />
+    <result column="descrip" property="descrip" jdbcType="LONGVARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    restaurant_id, manager_id, name, created_time, updated_time, item_id, category
+  </sql>
+  <sql id="Blob_Column_List" >
+    address, descrip
+  </sql>
+  <select id="selectByExampleWithBLOBs" resultMap="ResultMapWithBLOBs" parameterType="com.foodisgod.pojo.RestaurantExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from restaurant
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.foodisgod.pojo.RestaurantExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from restaurant
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from restaurant
+    where restaurant_id = #{restaurantId,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from restaurant
+    where restaurant_id = #{restaurantId,jdbcType=BIGINT}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.foodisgod.pojo.RestaurantExample" >
+    delete from restaurant
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.foodisgod.pojo.RestaurantWithBLOBs" >
+    insert into restaurant (restaurant_id, manager_id, name, 
+      created_time, updated_time, item_id, 
+      category, address, descrip
+      )
+    values (#{restaurantId,jdbcType=BIGINT}, #{managerId,jdbcType=BIGINT}, #{name,jdbcType=VARCHAR}, 
+      #{createdTime,jdbcType=TIMESTAMP}, #{updatedTime,jdbcType=TIMESTAMP}, #{itemId,jdbcType=BIGINT}, 
+      #{category,jdbcType=BIGINT}, #{address,jdbcType=LONGVARCHAR}, #{descrip,jdbcType=LONGVARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.foodisgod.pojo.RestaurantWithBLOBs" >
+    insert into restaurant
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="restaurantId != null" >
+        restaurant_id,
+      </if>
+      <if test="managerId != null" >
+        manager_id,
+      </if>
+      <if test="name != null" >
+        name,
+      </if>
+      <if test="createdTime != null" >
+        created_time,
+      </if>
+      <if test="updatedTime != null" >
+        updated_time,
+      </if>
+      <if test="itemId != null" >
+        item_id,
+      </if>
+      <if test="category != null" >
+        category,
+      </if>
+      <if test="address != null" >
+        address,
+      </if>
+      <if test="descrip != null" >
+        descrip,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="restaurantId != null" >
+        #{restaurantId,jdbcType=BIGINT},
+      </if>
+      <if test="managerId != null" >
+        #{managerId,jdbcType=BIGINT},
+      </if>
+      <if test="name != null" >
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="createdTime != null" >
+        #{createdTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatedTime != null" >
+        #{updatedTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="itemId != null" >
+        #{itemId,jdbcType=BIGINT},
+      </if>
+      <if test="category != null" >
+        #{category,jdbcType=BIGINT},
+      </if>
+      <if test="address != null" >
+        #{address,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="descrip != null" >
+        #{descrip,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.foodisgod.pojo.RestaurantExample" resultType="java.lang.Integer" >
+    select count(*) from restaurant
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update restaurant
+    <set >
+      <if test="record.restaurantId != null" >
+        restaurant_id = #{record.restaurantId,jdbcType=BIGINT},
+      </if>
+      <if test="record.managerId != null" >
+        manager_id = #{record.managerId,jdbcType=BIGINT},
+      </if>
+      <if test="record.name != null" >
+        name = #{record.name,jdbcType=VARCHAR},
+      </if>
+      <if test="record.createdTime != null" >
+        created_time = #{record.createdTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.updatedTime != null" >
+        updated_time = #{record.updatedTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.itemId != null" >
+        item_id = #{record.itemId,jdbcType=BIGINT},
+      </if>
+      <if test="record.category != null" >
+        category = #{record.category,jdbcType=BIGINT},
+      </if>
+      <if test="record.address != null" >
+        address = #{record.address,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="record.descrip != null" >
+        descrip = #{record.descrip,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExampleWithBLOBs" parameterType="map" >
+    update restaurant
+    set restaurant_id = #{record.restaurantId,jdbcType=BIGINT},
+      manager_id = #{record.managerId,jdbcType=BIGINT},
+      name = #{record.name,jdbcType=VARCHAR},
+      created_time = #{record.createdTime,jdbcType=TIMESTAMP},
+      updated_time = #{record.updatedTime,jdbcType=TIMESTAMP},
+      item_id = #{record.itemId,jdbcType=BIGINT},
+      category = #{record.category,jdbcType=BIGINT},
+      address = #{record.address,jdbcType=LONGVARCHAR},
+      descrip = #{record.descrip,jdbcType=LONGVARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update restaurant
+    set restaurant_id = #{record.restaurantId,jdbcType=BIGINT},
+      manager_id = #{record.managerId,jdbcType=BIGINT},
+      name = #{record.name,jdbcType=VARCHAR},
+      created_time = #{record.createdTime,jdbcType=TIMESTAMP},
+      updated_time = #{record.updatedTime,jdbcType=TIMESTAMP},
+      item_id = #{record.itemId,jdbcType=BIGINT},
+      category = #{record.category,jdbcType=BIGINT}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.foodisgod.pojo.RestaurantWithBLOBs" >
+    update restaurant
+    <set >
+      <if test="managerId != null" >
+        manager_id = #{managerId,jdbcType=BIGINT},
+      </if>
+      <if test="name != null" >
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="createdTime != null" >
+        created_time = #{createdTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatedTime != null" >
+        updated_time = #{updatedTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="itemId != null" >
+        item_id = #{itemId,jdbcType=BIGINT},
+      </if>
+      <if test="category != null" >
+        category = #{category,jdbcType=BIGINT},
+      </if>
+      <if test="address != null" >
+        address = #{address,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="descrip != null" >
+        descrip = #{descrip,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where restaurant_id = #{restaurantId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.foodisgod.pojo.RestaurantWithBLOBs" >
+    update restaurant
+    set manager_id = #{managerId,jdbcType=BIGINT},
+      name = #{name,jdbcType=VARCHAR},
+      created_time = #{createdTime,jdbcType=TIMESTAMP},
+      updated_time = #{updatedTime,jdbcType=TIMESTAMP},
+      item_id = #{itemId,jdbcType=BIGINT},
+      category = #{category,jdbcType=BIGINT},
+      address = #{address,jdbcType=LONGVARCHAR},
+      descrip = #{descrip,jdbcType=LONGVARCHAR}
+    where restaurant_id = #{restaurantId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.foodisgod.pojo.Restaurant" >
+    update restaurant
+    set manager_id = #{managerId,jdbcType=BIGINT},
+      name = #{name,jdbcType=VARCHAR},
+      created_time = #{createdTime,jdbcType=TIMESTAMP},
+      updated_time = #{updatedTime,jdbcType=TIMESTAMP},
+      item_id = #{itemId,jdbcType=BIGINT},
+      category = #{category,jdbcType=BIGINT}
+    where restaurant_id = #{restaurantId,jdbcType=BIGINT}
+  </update>
+
+
+
+
+
+</mapper>

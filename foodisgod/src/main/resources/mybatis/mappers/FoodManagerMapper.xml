@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.foodisgod.mapper.FoodManagerMapper">
+
+	<!--商家注册 -->
+	<insert id="saveFoodManager" parameterType="com.foodisgod.pojo.FoodManager">
+		insert into food_manager
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="managerId != null">
+				manager_id,
+			</if>
+			<if test="managerName != null">
+				manager_name,
+			</if>
+			<if test="idNum != null">
+				id_num,
+			</if>
+			<if test="password != null">
+				password,
+			</if>
+			<if test="phone != null">
+				phone,
+			</if>
+			<if test="email != null">
+				email,
+			</if>
+			<if test="createdTime != null">
+				created_time,
+			</if>
+			<if test="updatedTime != null">
+				updated_time,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="managerId != null">
+				#{managerId,jdbcType=BIGINT},
+			</if>
+			<if test="managerName != null">
+				#{managerName,jdbcType=VARCHAR},
+			</if>
+			<if test="idNum != null">
+				#{idNum,jdbcType=VARCHAR},
+			</if>
+			<if test="password != null">
+				#{password,jdbcType=VARCHAR},
+			</if>
+
+			<if test="phone != null">
+				#{phone,jdbcType=VARCHAR},
+			</if>
+			<if test="email != null">
+				#{email,jdbcType=VARCHAR},
+			</if>
+			<if test="createdTime != null">
+				#{createdTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="updatedTime != null">
+				#{updatedTime,jdbcType=TIMESTAMP},
+			</if>
+		</trim>
+	</insert>
+
+	<!--根据商家姓名查找商家 -->
+	<select id="findManagerByName" resultType="FoodManager">
+		select * from
+		food_manager where manager_name=#{managerName}
+	</select>
+
+
+	<!--商家登录，根据用户名查询密码 -->
+	<!-- <select id="findOneByUsername" resultType="FoodUser"> select * from 
+		food_user where username=#{username} </select> 买家登录根据用户名查找用户 <select id="findFoodUserByUsername" 
+		resultType="FoodUser"> select * from food_user where username=#{username} 
+		</select> -->
+</mapper>

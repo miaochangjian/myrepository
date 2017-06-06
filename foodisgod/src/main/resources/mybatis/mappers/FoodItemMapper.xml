@@ -1,0 +1,451 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.foodisgod.mapper.FoodItemMapper" >
+
+
+
+
+   
+  
+ <!--  <resultMap id="BaseResultMap" type="com.foodisgod.pojo.FoodItem" >
+    <id column="item_id" property="itemId" jdbcType="BIGINT" />
+    <result column="title" property="title" jdbcType="VARCHAR" />
+    <result column="sell_point" property="sellPoint" jdbcType="VARCHAR" />
+    <result column="price" property="price" jdbcType="BIGINT" />
+    <result column="amount" property="amount" jdbcType="INTEGER" />
+    <result column="image" property="image" jdbcType="VARCHAR" />
+    <result column="category" property="category" jdbcType="BIGINT" />
+    <result column="status" property="status" jdbcType="TINYINT" />
+    <result column="created_time" property="createdTime" jdbcType="TIMESTAMP" />
+    <result column="updated_time" property="updatedTime" jdbcType="TIMESTAMP" />
+  </resultMap> -->
+
+	<select id="findFoodBySimpleImg" resultType="FoodItem">
+		SELECT f.* FROM 
+		food_item  f
+		LEFT JOIN 
+		restaurant r
+		ON r.item_id = f.item_id 
+		WHERE f.title LIKE concat('%',#{img},'%')  OR r.descrip LIKE concat('%',#{img},'%')
+		<!-- SELECT f.* FROM 
+		food_item  f
+		WHERE f.title =#{img} -->
+	</select>
+
+  
+  
+   
+   
+    
+    
+ 
+    
+    
+ 
+  
+  <select id="findFoodById" resultType="FoodItem">
+		SELECT f.* FROM 
+		food_item  f
+		WHERE f.item_id=#{itemId}
+	
+	
+	</select>
+  
+   <!-- 查询销售信息 -->
+   <select id="findSaleInfos" resultType="FoodItem">
+   		select * from food_item order by amount desc limit 0,10
+   </select>
+   
+   <!--添加商品  -->
+   <insert id="addFoodItem" >
+      insert into food_item (item_id, title, sell_point, 
+      price, amount, image, category, 
+      status, created_time, 
+      updated_time)
+      values (#{itemId,jdbcType=BIGINT}, #{title,jdbcType=VARCHAR}, #{sellPoint,jdbcType=VARCHAR}, 
+      #{price,jdbcType=BIGINT}, #{amount,jdbcType=INTEGER}, #{image,jdbcType=VARCHAR}, #{category,jdbcType=BIGINT},
+      #{status,jdbcType=TINYINT}, #{createdTime,jdbcType=TIMESTAMP}, 
+      #{updatedTime,jdbcType=TIMESTAMP})
+   </insert>
+  
+	<select id="findFoodByStatus" resultType="FoodItem">
+		SELECT * FROM food_item WHERE STATUS= #{status}
+	</select>
+	
+	  <!-- 查询所有商品 -->
+     <select id="findAll" resultType="FoodItem">
+          select * from food_item
+     </select>
+     
+     <!-- 分页查询 -->
+     <select id="findAllDivide" resultType="FoodItem">
+           select * from food_item limit #{page},#{rows}
+     
+     </select>
+     
+     
+    <!-- 根据 id 集合 删除 对象 -->
+    <delete id="deleteById">
+      
+      delete from food_item where item_id in(
+       <foreach collection="array" item="itemId" separator=","> #{itemId}</foreach>
+      
+      )  
+    
+    </delete>
+    
+    <update id="updateItem">
+       update food_item set 
+                  title = #{title},
+                  sell_point = #{sellPoint},
+                  price = #{price},
+                  amount = #{amount},
+                  image = #{image},
+                  category = #{category},
+                  status= #{status},
+                  created_time= #{createdTime},
+                  updated_time= #{updatedTime}
+             where item_id = #{id}
+    
+    
+    </update>
+    
+    <!-- 修改 商品 上下架 状态 -->          
+  <update id="updateStatus">
+       update food_item set  status= #{status} where item_id in (
+        <foreach collection="ids" item="temId" separator=",">#{temId}</foreach>
+         
+       )
+  
+  </update>
+  
+ 
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  <!-- <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql> -->
+  
+  <!-- <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql> -->
+  
+  
+ <!--  <sql id="Base_Column_List" >
+    item_id, title, sell_point, price, amount, image, category, status, created_time, 
+    updated_time
+  </sql> -->
+  
+  
+ <!--  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.foodisgod.pojo.FoodItemExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from food_item
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select> -->
+  
+  
+  <!-- <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from food_item
+    where item_id = #{itemId,jdbcType=BIGINT}
+  </select> -->
+  
+  
+ <!--  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from food_item
+    where item_id = #{itemId,jdbcType=BIGINT}
+  </delete>
+   -->
+  <!-- 
+  <delete id="deleteByExample" parameterType="com.foodisgod.pojo.FoodItemExample" >
+    delete from food_item
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete> -->
+  
+  
+  <!-- <insert id="insert" parameterType="com.foodisgod.pojo.FoodItem" >
+    insert into food_item (item_id, title, sell_point, 
+      price, amount, image, 
+      category, status, created_time, 
+      updated_time)
+      values (#{itemId,jdbcType=BIGINT}, #{title,jdbcType=VARCHAR}, #{sellPoint,jdbcType=VARCHAR}, 
+      #{price,jdbcType=BIGINT}, #{amount,jdbcType=INTEGER}, #{image,jdbcType=VARCHAR}, #{category,jdbcType=BIGINT},
+      #{status,jdbcType=TINYINT}, #{createdTime,jdbcType=TIMESTAMP}, 
+      #{updatedTime,jdbcType=TIMESTAMP})
+  </insert>-->
+
+  
+  <!-- <insert id="insertSelective" parameterType="com.foodisgod.pojo.FoodItem" >
+    insert into food_item
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="itemId != null" >
+        item_id,
+      </if>
+      <if test="title != null" >
+        title,
+      </if>
+      <if test="sellPoint != null" >
+        sell_point,
+      </if>
+      <if test="price != null" >
+        price,
+      </if>
+      <if test="amount != null" >
+        amount,
+      </if>
+      <if test="image != null" >
+        image,
+      </if>
+      <if test="category != null" >
+        category,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="createdTime != null" >
+        created_time,
+      </if>
+      <if test="updatedTime != null" >
+        updated_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="itemId != null" >
+        #{itemId,jdbcType=BIGINT},
+      </if>
+      <if test="title != null" >
+        #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="sellPoint != null" >
+        #{sellPoint,jdbcType=VARCHAR},
+      </if>
+      <if test="price != null" >
+        #{price,jdbcType=BIGINT},
+      </if>
+      <if test="amount != null" >
+        #{amount,jdbcType=INTEGER},
+      </if>
+      <if test="image != null" >
+        #{image,jdbcType=VARCHAR},
+      </if>
+      <if test="category != null" >
+        #{category,jdbcType=BIGINT},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=TINYINT},
+      </if>
+      <if test="createdTime != null" >
+        #{createdTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatedTime != null" >
+        #{updatedTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert> -->
+  
+  
+ <!--  <select id="countByExample" parameterType="com.foodisgod.pojo.FoodItemExample" resultType="java.lang.Integer" >
+    select count(*) from food_item
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select> -->
+  
+  
+  <!-- <update id="updateByExampleSelective" parameterType="map" >
+    update food_item
+    <set >
+      <if test="record.itemId != null" >
+        item_id = #{record.itemId,jdbcType=BIGINT},
+      </if>
+      <if test="record.title != null" >
+        title = #{record.title,jdbcType=VARCHAR},
+      </if>
+      <if test="record.sellPoint != null" >
+        sell_point = #{record.sellPoint,jdbcType=VARCHAR},
+      </if>
+      <if test="record.price != null" >
+        price = #{record.price,jdbcType=BIGINT},
+      </if>
+      <if test="record.amount != null" >
+        amount = #{record.amount,jdbcType=INTEGER},
+      </if>
+      <if test="record.image != null" >
+        image = #{record.image,jdbcType=VARCHAR},
+      </if>
+      <if test="record.category != null" >
+        category = #{record.category,jdbcType=BIGINT},
+      </if>
+      <if test="record.status != null" >
+        status = #{record.status,jdbcType=TINYINT},
+      </if>
+      <if test="record.createdTime != null" >
+        created_time = #{record.createdTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.updatedTime != null" >
+        updated_time = #{record.updatedTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update> -->
+  
+  
+ <!--  <update id="updateByExample" parameterType="map" >
+    update food_item
+    set item_id = #{record.itemId,jdbcType=BIGINT},
+      title = #{record.title,jdbcType=VARCHAR},
+      sell_point = #{record.sellPoint,jdbcType=VARCHAR},
+      price = #{record.price,jdbcType=BIGINT},
+      amount = #{record.amount,jdbcType=INTEGER},
+      image = #{record.image,jdbcType=VARCHAR},
+      category = #{record.category,jdbcType=BIGINT},
+      status = #{record.status,jdbcType=TINYINT},
+      created_time = #{record.createdTime,jdbcType=TIMESTAMP},
+      updated_time = #{record.updatedTime,jdbcType=TIMESTAMP}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update> -->
+  
+  
+  <!-- <update id="updateByPrimaryKeySelective" parameterType="com.foodisgod.pojo.FoodItem" >
+    update food_item
+    <set >
+      <if test="title != null" >
+        title = #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="sellPoint != null" >
+        sell_point = #{sellPoint,jdbcType=VARCHAR},
+      </if>
+      <if test="price != null" >
+        price = #{price,jdbcType=BIGINT},
+      </if>
+      <if test="amount != null" >
+        amount = #{amount,jdbcType=INTEGER},
+      </if>
+      <if test="image != null" >
+        image = #{image,jdbcType=VARCHAR},
+      </if>
+      <if test="category != null" >
+        category = #{category,jdbcType=BIGINT},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=TINYINT},
+      </if>
+      <if test="createdTime != null" >
+        created_time = #{createdTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updatedTime != null" >
+        updated_time = #{updatedTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where item_id = #{itemId,jdbcType=BIGINT}
+  </update> -->
+  
+ <!--  <update id="updateByPrimaryKey" parameterType="com.foodisgod.pojo.FoodItem" >
+    update food_item
+    set title = #{title,jdbcType=VARCHAR},
+      sell_point = #{sellPoint,jdbcType=VARCHAR},
+      price = #{price,jdbcType=BIGINT},
+      amount = #{amount,jdbcType=INTEGER},
+      image = #{image,jdbcType=VARCHAR},
+      category = #{category,jdbcType=BIGINT},
+      status = #{status,jdbcType=TINYINT},
+      created_time = #{createdTime,jdbcType=TIMESTAMP},
+      updated_time = #{updatedTime,jdbcType=TIMESTAMP}
+    where item_id = #{itemId,jdbcType=BIGINT}
+  </update> -->
+  
+  
+  
+
+</mapper>
