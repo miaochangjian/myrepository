@@ -22,7 +22,7 @@
 	function myFun(result){
 		var cityName = result.name;
 		//map.setCenter(cityName);
-		post('todetails', {name :cityName});
+		post('home', {name :cityName});
 		
 	}
 	var myCity = new BMap.LocalCity();

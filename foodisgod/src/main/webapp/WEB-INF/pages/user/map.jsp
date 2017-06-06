@@ -12,6 +12,7 @@
 	<script src="${ctx}/staticfile/js/starry-sky.js"></script>
 	<link href="${ctx}/staticfile/css/botton_map.css" rel="stylesheet" type="text/css">
 	<link href="${ctx}/staticfile/css/starry-sky.css" rel="stylesheet" type="text/css">
+	<link href="${ctx}/staticfile/css/map-font.css" rel="stylesheet" type="text/css">
 	<style type="text/css">
 		body, html,#allmap,#canvas {width: 100%;height: 100%;overflow: hidden;margin:0;font-family:"微软雅黑";}
 		
@@ -33,6 +34,7 @@
 	
 	<! 为 ECharts 准备一个具备大小（宽高）的 DOM >
 	<div class="svg-wrapper">
+	
 		<svg height="40" width="150" xmlns="http://www.w3.org/2000/svg">
 			<rect id="shape" height="40" width="150" />
 			<div id="text">
@@ -40,6 +42,20 @@
 			</div>
 		</svg>
 	</div>
+			<link href='http://fonts.googleapis.com/css?family=Lato:300,400,700' rel='stylesheet' type='text/css'>
+<div id='stars'></div>
+<div id='stars2'></div>
+<div id='stars3'></div>
+<div id='title'>
+  <span>
+    食色天下
+  </span>
+  <br/>
+  <span style="font-size: 30px;">
+    请选择城市，或点击自动定位
+  </span>
+  
+</div>
 	<div id="allmap" style='background-image:-moz-element(#elementID);'></div>
 	<canvas id='canvas' ></canvas>
 	
